@@ -23,9 +23,14 @@ module.exports = function(opts, state, cb){
             state.commitsUsers = [];
 
             data.forEach(function anaylzeCommit(commit){
-                state.commits.push(commit.commit.message);
-
-                state.commitsUsers.push(commit.author.login);
+                if(commit){
+                    if(commit.commit) {
+                        state.commits.push(commit.commit.message);
+                    }
+                    if(commit.author) {
+                        state.commitsUsers.push(commit.author.login);
+                    }
+                }
             });
         }
 
