@@ -31,18 +31,26 @@ module.exports = function(opts, state, cb){
     function callback(err, data){
         if(typeof cb === 'function'){
 
-            var gitHubParseRegex = opts.githubRepoUserRegex || /\/(\w+)\/(\w+).git/;
+            var gitHubParseRegex = opts.githubRepoUserRegex || /.*[\/|:](.+)\/(.+).git/;
             var regexResult = gitHubParseRegex.exec(data);
 
-            log('user', regexResult[1]);
-            log('repo', regexResult[2]);
+            var user;
+            var repo;
 
-            state.user = regexResult[1];
-            state.repo = regexResult[2];
+            if(regexResult){
+                user = regexResult[1];
+                repo = regexResult[2];
+
+                log('user', user);
+                log('repo', repo);
+            }
+
+            state.user = user;
+            state.repo = repo;
 
             cb(err, {
-                user : regexResult[1],
-                repo : regexResult[2]
+                user : user,
+                repo : repo
             });
         }
         else {
