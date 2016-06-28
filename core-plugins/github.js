@@ -6,14 +6,14 @@ module.exports = function(opts, state, cb){
     var GithubApi = require('github');
 
     var github = new GithubApi({
-        protocol : opts.protocol || 'https',
-        host : opts.host || 'api.github.com',
-        timeout : opts.timeout || 5000,
-        pathPrefix: opts.pathPrefix
+        protocol : opts.plugin.github.protocol || 'https',
+        host : opts.plugin.github.host || 'api.github.com',
+        timeout : opts.plugin.github.timeout || 5000,
+        pathPrefix: opts.plugin.github.pathPrefix
     });
 
     github.repos.getCommits({
-        per_page : opts.pageSize || 200,
+        per_page : opts.plugin.github.pageSize || 200,
         user : state.user,
         repo : state.repo
     }, function(err, data){
