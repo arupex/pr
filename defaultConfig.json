@@ -1,0 +1,31 @@
+{
+  "plugins" : {
+    "signOffs" : {},
+    "gitBranch" : {
+      "branchSanitizer" : {
+        "/" : "-"
+      }
+    },
+    "gitUserRepo" : {},
+    "github": {
+      "master" : "master"
+    },
+    "rally": {
+      "user": "username",
+      "pass": "password"
+    },
+    "jenkins" : {
+      "url" : "http://jenkins.com",
+      "jobMustache" : "{{user}}/{{repo}}/workflows/{{saneBranch}}"
+    },
+    "jenkinsBuildStatus": {
+
+    },
+    "stackTrace":{}
+  },
+  "log" : false,
+
+  "signOffs": [
+
+  ]
+}

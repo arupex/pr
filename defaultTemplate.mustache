@@ -1,0 +1,29 @@
+
+#{{saneBranch}}
+
+{{created}}
+
+| Build Status |   |
+{{jenkinsBuildIcon}}
+
+| Rally |
+|:--|
+{{#userStories}}
+|   {{.}} |
+{{/userStories}}
+{{#defects}}
+    |   {{.}} |
+{{/defects}}
+
+
+#Commiters
+
+    {{#commitsUsers}}
+    - [ ] @{{.}}
+    {{/commitsUsers}}
+
+Approvals Please:
+
+    {{#signOffs}}
+    - [ ] @{{.}}
+    {{/signOffs}}

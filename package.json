@@ -1,0 +1,40 @@
+{
+  "name": "pull-request-generator",
+  "version": "0.0.1",
+  "description": "Generate Pull Requests w/ plugin support",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/mocha/bin/mocha test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arupex/pr.git"
+  },
+  "keywords": [
+    "pull",
+    "request",
+    "pr",
+    "git",
+    "acceptance"
+  ],
+  "author": "dirwin517",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/arupex/pr/issues"
+  },
+  "homepage": "https://github.com/arupex/pr#readme",
+  "devDependencies": {
+    "assert-diff": "^1.0.1",
+    "mocha": "^2.5.3"
+  },
+  "bin": {
+    "prme": "./bin/pr.js"
+  },
+  "dependencies": {
+    "github": "^2.0.0",
+    "jenkins": "^0.17.0",
+    "mustache": "^2.2.1",
+    "q": "^1.4.1",
+    "rally": "^0.2.0"
+  }
+}
