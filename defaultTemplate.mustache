@@ -4,23 +4,23 @@
 {{created}}
 
 | Build Status |   |
-{{jenkinsBuildIcon}}
+{{{jenkinsBuildIcon}}}
 
-| Rally |
-|:--|
+| ID | Title |
+|:--|:--|
 {{#userStories}}
-|   {{.}} |
+| {{id}} | {{name}} |
 {{/userStories}}
 {{#defects}}
-    |   {{.}} |
+|   {{id}} | {{name}} |
 {{/defects}}
 
 
 #Commiters
 
-    {{#commitsUsers}}
+    {{#uniqueUsers}}
     - [ ] @{{.}}
-    {{/commitsUsers}}
+    {{/uniqueUsers}}
 
 Approvals Please:
 

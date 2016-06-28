@@ -4,6 +4,7 @@
 module.exports = function(opts, cb){
 
     if(!opts || !opts.plugins){
+        console.log(!opts, !opts.plugins);
         return cb('no plugins');
     }
 

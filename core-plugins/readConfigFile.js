@@ -6,7 +6,15 @@ module.exports = function(opts, cb){
     var fs = require('fs');
 
     try {
-        cb(undefined, fs.readFileSync(opts.file));
+        process.nextTick(function(){
+            try {
+                var readFileSync = fs.readFileSync(opts.file, 'utf8');
+                cb(undefined, JSON.parse(readFileSync));
+            }
+            catch(e){
+                cb(e);
+            }
+        });
     }
     catch(e){
         cb(e);

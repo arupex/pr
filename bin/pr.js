@@ -8,13 +8,20 @@ module.exports = (function(){
         file : process.cwd() + '/pr-conf.json'
     }, function (err, configFile){
         if(err){
+            console.log('configFileRead', err.stack);
             configFile = require('../defaultConfig.json');
         }
 
+        //console.log('', configFile);
 
         var pluginLoader = require('../core-plugins/pluginLoader');
 
         pluginLoader(configFile, function(err, plugins){
+
+            if(err){
+                console.log('', err);
+                return;
+            }
 
             var state = { created : new Date().toDateString() };
 

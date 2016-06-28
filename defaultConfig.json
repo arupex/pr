@@ -12,7 +12,10 @@
     },
     "rally": {
       "user": "username",
-      "pass": "password"
+      "pass": "password",
+      "nameTranslator" : {
+        "Ronnie" : "rwright"
+      }
     },
     "jenkins" : {
       "url" : "http://jenkins.com",
