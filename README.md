@@ -1,6 +1,8 @@
 # pr
 Pull Request Generator w/ Plugin support
 
+[![npm version](https://badge.fury.io/js/pull-request-generator.svg)](https://badge.fury.io/js/pull-request-generator) [![dependencies](https://david-dm.org/arupex/pull-request-generator.svg)](http://github.com/arupex/pull-request-generator) ![Build Status](https://api.travis-ci.org/arupex/pull-request-generator.svg?branch=master) <a href='https://pledgie.com/campaigns/31873'><img alt='Pledge To Arupex!' src='https://pledgie.com/campaigns/31873.png?skin_name=chrome' border='0' ></a>
+
 #Are you Lazy? So are we!
 
 #Install
