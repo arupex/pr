@@ -10,6 +10,7 @@
     "github": {
       "master" : "master"
     },
+    "githubCommitDiff" : {},
     "rally": {
       "user": "username",
       "pass": "password",

@@ -21,6 +21,8 @@ module.exports = function(opts, cb){
         gitBranch : require('../core-plugins/gitBranch'),
         gitUserRepo : require('../core-plugins/githubUserRepo'),
 
+        githubCommitDiff : require('../core-plugins/githubCommitDiff'),
+
         stackTrace : require('../core-plugins/stackTrace')
     };
 

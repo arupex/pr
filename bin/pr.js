@@ -4,8 +4,14 @@ module.exports = (function(){
 
     var ConfigFileReadPlugin = require('../core-plugins/readConfigFile');
 
+    var file = process.cwd() + '/pr-conf.json';
+
+    if(process.argv.length > 2){
+        file = process.cwd() + '/' + process.argv[2];
+    }
+
     ConfigFileReadPlugin({
-        file : process.cwd() + '/pr-conf.json'
+        file : file
     }, function (err, configFile){
         if(err){
             console.log('configFileRead', err.stack);

@@ -16,7 +16,7 @@ module.exports = function(opts, state, cb){
         headers : githubOpts.headers
     };
 
-var fullAddress = githubClientOpts.protocol + '://' + githubClientOpts.host + (githubClientOpts.pathPrefix?githubClientOpts.pathPrefix:'') + '/repos/' + state.user + '/' + state.repo + '/commits?per_page=200';
+    var fullAddress = githubClientOpts.protocol + '://' + githubClientOpts.host + (githubClientOpts.pathPrefix?githubClientOpts.pathPrefix:'') + '/repos/' + state.user + '/' + state.repo + '/commits?per_page=200';
     request.get({
 
         url : fullAddress,

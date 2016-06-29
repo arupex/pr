@@ -6,6 +6,8 @@ module.exports = function(opts, state, cb){
     var userStoryRegex = /(us[0-9]+)/i;
     var defectRegex = /(de[0-9]+)/;
 
+    var rallyOpts = opts.plugins.rally;
+
     var rally = require('rally');
 
     var Q = require('q');
@@ -55,7 +57,7 @@ module.exports = function(opts, state, cb){
         }
     }
 
-    if(state.commits){
+    if(state.commits && rallyOpts.readCommits){
         state.userStories = [];
         state.defects = [];
         state.tasks = [];

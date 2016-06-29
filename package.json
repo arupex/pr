@@ -31,8 +31,10 @@
     "prme": "./bin/pr.js"
   },
   "dependencies": {
+    "diff-map": "^1.0.0",
     "github": "^2.0.0",
     "jenkins": "^0.17.0",
+    "map-attack": "^1.0.0",
     "mustache": "^2.2.1",
     "q": "^1.4.1",
     "rally": "^0.2.0",
