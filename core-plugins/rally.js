@@ -3,6 +3,12 @@
  */
 module.exports = function(opts, state, cb){
 
+    function log(label, data, data2){
+        //if(opts.log){
+            console.log('', label, data, data2);
+        //}
+    }
+
     var userStoryRegex = /(us[0-9]+)/i;
     var defectRegex = /(de[0-9]+)/;
 
@@ -13,11 +19,11 @@ module.exports = function(opts, state, cb){
     var Q = require('q');
 
     //console.log('', opts.plugins.rally);
-    var restApi = rally(opts.plugins.rally);
+    var restApi = rally(rallyOpts);
     var queryUtils = rally.util.query;
 
     function getTaskUnit(formattedId){
-        //console.log('getting ', formattedId, ' from rally');
+        log('getting ', formattedId, ' from rally');
         return restApi.query({
             type: formattedId.toUpperCase().indexOf('US') > -1?'hierarchicalrequirement':'defect',
             start: 1,
@@ -31,7 +37,7 @@ module.exports = function(opts, state, cb){
 
 
     function getTasks(taskId){
-        //console.log('getting ', taskId, ' from rally');
+        log('getting ', taskId, ' from rally');
         return restApi.query({
             ref: '/' +taskId,
             start: 1,
@@ -56,13 +62,12 @@ module.exports = function(opts, state, cb){
             defectPromises.push(getTaskUnit(branchDefect[1]));
         }
     }
+    state.userStories = [];
+    state.defects = [];
+    state.tasks = [];
+    state.rallyUsers = [];
 
     if(state.commits && rallyOpts.readCommits){
-        state.userStories = [];
-        state.defects = [];
-        state.tasks = [];
-        state.rallyUsers = [];
-
         state.commits.forEach(function(msg){
 
             var userStoryMatch = msg.match(userStoryRegex);
@@ -83,71 +88,91 @@ module.exports = function(opts, state, cb){
 
     function handleTasks(userStory){
 
+        log('task handeler');
         var taskRegex = /.*[\/](\w+\/.*\/Tasks)/;
 
         if(userStory.Tasks) {
+
+            log('handeling task');
+
             var match = taskRegex.exec(userStory.Tasks._ref);
             if(match){
+
+                log('handeling task' + match[1]);
+
                 taskPromises.push(getTasks(match[1]));
             }
         }
+    }
+
+    function isValidResult(response) {
+        return response && response[0] && response[0].value && Array.isArray(response[0].value.Results);
     }
 
     if(defectPromises.length === 0 && userStoryPromises.length === 0){
         cb();
     }
     else {
-        Q.allSettled(defectPromises).then(function (defectResponse) {
-            if(defectResponse && defectResponse[0] && defectResponse[0].value && Array.isArray(defectResponse[0].value.Results)) {
-                defectResponse[0].value.Results.forEach(function (defect) {
 
-                    state.defects.push({
-                        id: defect.FormattedID,
-                        name: defect.Name,
-                        state: defect.ScheduleState
-                    });
+        function handleTaskUnits(store) {
 
-                    handleTasks(defect);
-
+            return function handleUnit(unit) {
+                //log('handeling unit', unit);
+                store.push({
+                    id: unit.FormattedID,
+                    name: unit.Name,
+                    state: unit.ScheduleState
                 });
+
+                handleTasks(unit);
+            };
+        }
+
+        Q.allSettled(defectPromises).then(function (defectResponse) {
+            log('settling defects');
+
+            if(isValidResult(defectResponse)) {
+                defectResponse[0].value.Results.forEach(handleTaskUnits(state.defects));
             }
+            else {
+                log('invalid defect response');
+            }
+
             return Q.allSettled(userStoryPromises);
         }).then(function (userStoriesResponse) {
 
-            if(userStoriesResponse && userStoriesResponse[0] && userStoriesResponse[0].value && Array.isArray(userStoriesResponse[0].value.Results)) {
-                userStoriesResponse[0].value.Results.forEach(function (userStory) {
-
-                    state.userStories.push({
-                        id: userStory.FormattedID,
-                        name: userStory.Name,
-                        state: userStory.ScheduleState
-                    });
-
-
-                    handleTasks(userStory);
-
-                });
+            log('settling user stories');
+            if(isValidResult(userStoriesResponse)) {
+                userStoriesResponse[0].value.Results.forEach(handleTaskUnits(state.userStories));
+            }
+            else {
+                log('invalid user story response');
             }
 
-        }).then(function(){
-            Q.allSettled(taskPromises).then(function(tasksResponse){
+        //}).then(function(){
+            return Q.allSettled(taskPromises).then(function(tasksResponse){
 
-                if(tasksResponse && tasksResponse[0] && tasksResponse[0].value && Array.isArray(tasksResponse[0].value.Results)) {
+                log('settling tasks');
+
+                if(isValidResult(tasksResponse)) {
                     var uniqueUsers = {};
                     tasksResponse[0].value.Results.forEach(function (task) {
 
                         var owner = '';
                         if(task.Owner) {
-                            if (opts.plugins.rally.nameTranslator) {
-                                if (opts.plugins.rally.nameTranslator[task.Owner._refObjectName]) {
-                                    owner = opts.plugins.rally.nameTranslator[task.Owner._refObjectName];
+                            var nameTranslator = rallyOpts.nameTranslator;
+                            var ownerRefName = task.Owner._refObjectName;
+
+                            if (nameTranslator) {
+                                if (nameTranslator[ownerRefName]) {
+                                    owner = nameTranslator[ownerRefName];
                                 }
                                 else {
-                                    owner = task.Owner._refObjectName;
+                                    owner = ownerRefName;
                                 }
                             }
                             else {
-                                owner = task.Owner._refObjectName;
+                                owner = ownerRefName;
                             }
 
                             uniqueUsers[owner] = true;
@@ -165,14 +190,19 @@ module.exports = function(opts, state, cb){
                         state.rallyUsers.push(user);
                     });
 
-                    cb();
+                    //cb();
                 }
                 else {
-                    cb();
+                    console.log('rally, results were not array');
+                    //cb();
                 }
             }, function(err){
-                console.log('', err);
+                console.log('rally error', err);
+                //cb();
             });
+        }).then(function(){
+            console.log('finished rally');
+            cb();
         });
     }
 

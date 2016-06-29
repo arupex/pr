@@ -10,6 +10,10 @@ module.exports = (function(){
         file = process.cwd() + '/' + process.argv[2];
     }
 
+    process.on('uncaughtException', function(err){
+        console.log('', err);
+    });
+
     ConfigFileReadPlugin({
         file : file
     }, function (err, configFile){
