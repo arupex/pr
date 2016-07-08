@@ -38,7 +38,7 @@ module.exports = function(opts, cb){
             modul = require(opts.require);
         }
         else if(typeof opts.path === 'string'){
-            modul = require(process.cwd() + opts.require);
+            modul = require(process.cwd() + opts.path);
         }
         else if(typeof nativePlugins[name] === 'function'){
             modul = nativePlugins[name];
