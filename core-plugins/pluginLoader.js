@@ -23,6 +23,8 @@ module.exports = function(opts, cb){
 
         githubCommitDiff : require('../core-plugins/githubCommitDiff'),
 
+        arrayFilter : require('../core-plugins/arrayFilter'),
+
         stackTrace : require('../core-plugins/stackTrace')
     };
 

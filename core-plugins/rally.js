@@ -30,7 +30,7 @@ module.exports = function(opts, state, cb){
             type: lowerCaseFid.indexOf('us') > -1?'hierarchicalrequirement':'defect',
             start: 1,
             pageSize: 2,
-            limit: 10,
+            limit: 20,
             order: 'Rank',
             fetch: ['FormattedID', 'Name', 'ScheduleState', 'Tasks'],
             query: queryUtils.where('FormattedID', '=', lowerCaseFid)
@@ -44,7 +44,7 @@ module.exports = function(opts, state, cb){
             ref: '/' +taskId,
             start: 1,
             pageSize: 2,
-            limit: 10,
+            limit: 20,
             order: 'Rank',
             fetch: ['FormattedID', 'Name', 'Owner']
         });
