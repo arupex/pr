@@ -1,6 +1,6 @@
 {
   "name": "pull-request-generator",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "Generate Pull Requests w/ plugin support",
   "main": "index.js",
   "scripts": {
