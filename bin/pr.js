@@ -33,7 +33,7 @@ module.exports = (function(){
                 return;
             }
 
-            var state = { created : new Date().toDateString() };
+            var state = { created : new Date().toDateString().replace(/ /g, '_') };
 
             var whenDone = function(state){
                 var prBuilder = require('../core-plugins/prBuilder');
