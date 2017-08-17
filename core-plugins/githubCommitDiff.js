@@ -53,23 +53,23 @@ module.exports = function(opts, state, cb){
         var masterCommits = mapAttack(master, 'sha');
 
         var earliestSharedCommit = (current.reduce(function(acc, commit){
-            if(commit && masterCommits[commit.sha] && (Date.parse(commit.commit.author.date) < acc)){
+            if(commit && masterCommits[commit.sha] && commit.commit.author.date < acc){
                 return commit;
             }
             return acc;
-        }, new Date().getTime()));
+        }, new Date().toISOString()));
 
 
         masterCommits = mapAttack(master.filter(function(commit){
-            return Date.parse(commit.commit.author.date) < earliestSharedCommit
+            return commit.commit.author.date < earliestSharedCommit;
         }), 'sha');
 
         var currentCommits = mapAttack(current.filter(function(commit){
-            return Date.parse(commit.commit.author.date) < earliestSharedCommit
+            return commit.commit.author.date < earliestSharedCommit;
         }), 'sha');
 
         var commitsDiffer = mapDiff(currentCommits, masterCommits);
-
+        
         var differCommitArray = mapAttack(commitsDiffer, 'sha');
 
         console.log('DIFF', differCommitArray.length);
