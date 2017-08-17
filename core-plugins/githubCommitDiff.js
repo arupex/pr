@@ -69,10 +69,10 @@ module.exports = function(opts, state, cb){
         }), 'sha');
 
         var commitsDiffer = mapDiff(currentCommits, masterCommits);
-        
+
         var differCommitArray = mapAttack(commitsDiffer, 'sha');
 
-        console.log('DIFF', differCommitArray.length);
+        // console.log('DIFF', differCommitArray.length);
 
         differCommitArray.forEach(function(commit){
             if (commit) {
@@ -95,9 +95,9 @@ module.exports = function(opts, state, cb){
     }
 
 
-    console.log('masterBranch', masterBranch);
-
-    console.log('currentBranch', currentBranch);
+    // console.log('masterBranch', masterBranch);
+    //
+    // console.log('currentBranch', currentBranch);
 
     request.get({
         url : masterBranch,
