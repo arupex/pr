@@ -31,6 +31,8 @@ module.exports = function(opts, state, cb){
     if(githubOpts.masterUser && githubOpts.masterRepo){
         masterBranch = calcAddress(githubClientOpts.protocol, githubClientOpts.host, githubClientOpts.pathPrefix, githubOpts.masterUser, githubOpts.masterRepo, 200, githubOpts.master);
     }
+
+
     else {
         masterBranch = fullAddress + '&sha=' + encodeURIComponent(githubOpts.master);
     }
@@ -49,11 +51,28 @@ module.exports = function(opts, state, cb){
         //console.log('current', current);
 
         var masterCommits = mapAttack(master, 'sha');
-        var currentCommits = mapAttack(current, 'sha');
+
+        var earliestSharedCommit = (current.reduce(function(acc, commit){
+            if(commit && masterCommits[commit.sha] && commit.commit.author.date < acc){
+                return commit;
+            }
+            return acc;
+        }, new Date().toISOString()));
+
+
+        masterCommits = mapAttack(master.filter(function(commit){
+            return commit.commit.author.date < earliestSharedCommit;
+        }), 'sha');
+
+        var currentCommits = mapAttack(current.filter(function(commit){
+            return commit.commit.author.date < earliestSharedCommit;
+        }), 'sha');
 
         var commitsDiffer = mapDiff(currentCommits, masterCommits);
 
         var differCommitArray = mapAttack(commitsDiffer, 'sha');
+
+        // console.log('DIFF', differCommitArray.length);
 
         differCommitArray.forEach(function(commit){
             if (commit) {
@@ -74,6 +93,11 @@ module.exports = function(opts, state, cb){
         };
 
     }
+
+
+    // console.log('masterBranch', masterBranch);
+    //
+    // console.log('currentBranch', currentBranch);
 
     request.get({
         url : masterBranch,
