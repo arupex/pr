@@ -25,6 +25,8 @@ module.exports = function(opts, cb){
 
         arrayFilter : require('../core-plugins/arrayFilter'),
 
+        stackTrace : require('../core-plugins/pbCopy'),
+
         stackTrace : require('../core-plugins/stackTrace')
     };
 
