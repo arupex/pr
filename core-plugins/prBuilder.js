@@ -14,7 +14,9 @@ module.exports = function(opts, state, cb){
         template = fs.readFileSync(__dirname + '/../defaultTemplate.mustache', 'utf8');
     }
 
-    console.log('\n\nPull Request Markdown\n\n',Mustache.render(template, state),'\n\n');
+    state.prBuilderOutput = Mustache.render(template, state);
+
+    console.log('\n\nPull Request Markdown\n\n',state.prBuilderOutput,'\n\n');
 
     cb();
 };
