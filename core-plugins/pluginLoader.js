@@ -25,8 +25,6 @@ module.exports = function(opts, cb){
 
         arrayFilter : require('../core-plugins/arrayFilter'),
 
-        stackTrace : require('../core-plugins/pbCopy'),
-
         stackTrace : require('../core-plugins/stackTrace')
     };
 
@@ -47,7 +45,7 @@ module.exports = function(opts, cb){
         else if(typeof nativePlugins[name] === 'function'){
             modul = nativePlugins[name];
         }
-        else {
+        else if(name !== 'pbCopy'){
             console.log('Ignoring', name, 'plugin not found');
         }
 

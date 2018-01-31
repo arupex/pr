@@ -4,12 +4,11 @@
 module.exports = function(opts, state, cb){
 
     var proc = require('child_process').spawn('pbcopy');
-    proc.stdin.write(state.prBuilderOutput);
+    proc.stdin.write(state.prBuilderOutput || '');
     proc.stdin.end();
 
-    proc.on('close', (code) => {
-        console.log(`pbCopy exited ${code}`);
-
+    proc.on('close', function(code) {
+        console.log('pbCopy exited ' + code);
         cb();
     });
 };
