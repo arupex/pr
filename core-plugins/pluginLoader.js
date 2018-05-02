@@ -36,7 +36,10 @@ module.exports = function(opts, cb){
 
         var modul;
 
-        if (typeof opts.require === 'string') {
+        if(['pbCopy', 'prLink'].indexOf(name) > -1) {
+            console.log(name, ' is being ignored till end');
+        }
+        else if (typeof opts.require === 'string') {
             modul = require(opts.require);
         }
         else if(typeof opts.path === 'string'){
@@ -44,9 +47,6 @@ module.exports = function(opts, cb){
         }
         else if(typeof nativePlugins[name] === 'function'){
             modul = nativePlugins[name];
-        }
-        else if(name !== 'pbCopy'){
-            console.log('Ignoring', name, 'plugin not found');
         }
 
         if(modul) {

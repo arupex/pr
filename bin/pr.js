@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 module.exports = (function(){
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
     var ConfigFileReadPlugin = require('../core-plugins/readConfigFile');
 
@@ -33,20 +34,19 @@ module.exports = (function(){
                 return;
             }
 
-            var state = { created : new Date().toDateString().replace(/ /g, '_') };
+            var state = {
+                created : new Date().toDateString().replace(/ /g, '_'),
+                ts : new Date().toISOString()
+            };
 
             var whenDone = function(state){
                 var prBuilder = require('../core-plugins/prBuilder');
                 prBuilder(configFile, state, function(){
-                    if(configFile.plugins.pbCopy){
-                        var pbCopy = require('../core-plugins/pbCopy');
-                        pbCopy(configFile, state, function () {
-                            console.log('Done');
-                        });
-                    }
-                    else {
+
+                    var prLink = require('../core-plugins/prLink');
+                    prLink(configFile, state, function () {
                         console.log('Done');
-                    }
+                    });
                 });
             };
 
