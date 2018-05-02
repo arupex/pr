@@ -38,7 +38,15 @@ module.exports = (function(){
             var whenDone = function(state){
                 var prBuilder = require('../core-plugins/prBuilder');
                 prBuilder(configFile, state, function(){
-                    console.log('Done');
+                    if(configFile.plugins.pbCopy){
+                        var pbCopy = require('../core-plugins/pbCopy');
+                        pbCopy(configFile, state, function () {
+                            console.log('Done');
+                        });
+                    }
+                    else {
+                        console.log('Done');
+                    }
                 });
             };
 
