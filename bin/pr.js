@@ -41,11 +41,15 @@ module.exports = (function(){
 
             var whenDone = function(state){
                 var prBuilder = require('../core-plugins/prBuilder');
-                prBuilder(configFile, state, function(){
+                var prCopy = require('../core-plugins/pbCopy');
+                var prLink = require('../core-plugins/prLink');
 
-                    var prLink = require('../core-plugins/prLink');
-                    prLink(configFile, state, function () {
-                        console.log('Done');
+                // TODO: fix nesting issue later
+                prBuilder(configFile, state, function(){
+                    prCopy(configFile, state, function () {
+                        prLink(configFile, state, function () {
+                            console.log('Done');
+                        });
                     });
                 });
             };
