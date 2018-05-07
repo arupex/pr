@@ -5,3 +5,4 @@
 
 1.1.19 - prLink always
 1.1.20 - pbCopy always, ignore if in configs
+1.1.21 - rename to prme

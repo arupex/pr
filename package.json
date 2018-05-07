@@ -1,5 +1,5 @@
 {
-  "name": "pull-request-generator",
+  "name": "prme",
   "version": "1.1.20",
   "description": "Generate Pull Requests w/ plugin support",
   "main": "index.js",
