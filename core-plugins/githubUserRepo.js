@@ -31,7 +31,7 @@ module.exports = function(opts, state, cb){
     function callback(err, data){
         if(typeof cb === 'function'){
 
-            var gitHubParseRegex = opts.githubRepoUserRegex || /.*[\/|:](.+)\/(.+).git/;
+            var gitHubParseRegex = opts.githubRepoUserRegex || /.*[\/|:](.+)\/(.+)(?:\.git)?/;
             var regexResult = gitHubParseRegex.exec(data);
 
             var user;
