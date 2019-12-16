@@ -34,7 +34,9 @@ module.exports = function(opts, state, cb){
             state.saneBranch = state.branch;
             if(opts.plugins.gitBranch.branchSanitizer){
                 Object.keys(opts.plugins.gitBranch.branchSanitizer).forEach(function(whatItIs){
-                    state.saneBranch = state.saneBranch.replace(whatItIs,opts.plugins.gitBranch.branchSanitizer[whatItIs]);
+                    while(state.saneBranch.includes(whatItIs)) {
+                        state.saneBranch = state.saneBranch.replace(whatItIs, opts.plugins.gitBranch.branchSanitizer[whatItIs]);
+                    }
                 });
             }
             cb(err, data);

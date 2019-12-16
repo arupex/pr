@@ -34,9 +34,9 @@ module.exports = function(opts, state, cb){
 
 
     else {
-        masterBranch = fullAddress + '&sha=' + encodeURIComponent(githubOpts.master);
+        masterBranch = fullAddress + '&branch=' + encodeURIComponent(githubOpts.master);
     }
-    var currentBranch = fullAddress + '&sha=' + encodeURIComponent(state.branch);
+    var currentBranch = fullAddress + '&branch=' + encodeURIComponent(state.branch);
 
     //console.log('masterBranch', masterBranch);
     //console.log('currentBranch', currentBranch);
@@ -51,7 +51,6 @@ module.exports = function(opts, state, cb){
         //console.log('current', current);
 
         var masterCommits = mapAttack(master, 'sha');
-
         var earliestSharedCommit = (current.reduce(function(acc, commit){
             if(commit && masterCommits[commit.sha] && commit.commit.author.date < acc){
                 return commit;
@@ -101,7 +100,8 @@ module.exports = function(opts, state, cb){
 
     request.get({
         url : masterBranch,
-        json : true
+        json : true,
+        headers : githubOpts.headers
     }, function(err, masterResp){
 
         if(!err){
@@ -110,7 +110,8 @@ module.exports = function(opts, state, cb){
 
             request.get({
                 url : currentBranch,
-                json : true
+                json : true,
+                headers : githubOpts.headers
             }, function(err, currentResp){
 
                 if(!err){

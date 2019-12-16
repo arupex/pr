@@ -20,7 +20,8 @@ module.exports = function(opts, state, cb){
     request.get({
 
         url : fullAddress,
-        json : true
+        json : true,
+        headers : githubOpts.headers
     }, function(err, response){
         var data = response.body;
 
