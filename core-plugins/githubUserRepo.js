@@ -11,7 +11,7 @@ module.exports = function(opts, state, cb){
 
     const spawn = require('child_process').spawn;
 
-    const git = spawn('git', ['config', '--get', 'remote.origin.url'], {
+    const git = spawn('git', ['config', '--get', `remote.${opts.plugins.github.origin||'origin'}.url`], {
         cwd : process.cwd()
     });
 
